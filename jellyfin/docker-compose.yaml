@@ -1,0 +1,18 @@
+services:
+  jellyfin:
+    image: jellyfin/jellyfin:latest
+    container_name: jellyfin
+    ports:
+      - "${WEB_PORT}:8096"
+      # - "${HTTPS_PORT}:8920"  # Uncomment if using HTTPS
+    env_file:
+      - .env
+    volumes:
+      - jellyfin-config:/config
+      - jellyfin-cache:/cache
+      - ${MEDIA_PATH}:/media
+    restart: unless-stopped
+
+volumes:
+  jellyfin-config:
+  jellyfin-cache:

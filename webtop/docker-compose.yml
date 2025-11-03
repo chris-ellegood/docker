@@ -1,0 +1,40 @@
+services:
+  webtop:
+    image: lscr.io/linuxserver/webtop:ubuntu-xfce
+    container_name: webtop-software
+    env_file:
+      - .env
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - DISPLAY=${DISPLAY}
+      - PULSE_SERVER=${PULSE_SERVER}
+    volumes:
+      - webtop-config:/config
+      - /etc/machine-id:/etc/machine-id:ro
+      - /run/user/1000/pulse:/run/user/1000/pulse
+      - /tmp/.X11-unix:/tmp/.X11-unix
+    ports:
+      - "${WEBTOP_PORT1}:3000"
+      - "${WEBTOP_PORT2}:3001"
+    shm_size: "${SHM_SIZE}"
+    tmpfs:
+      - /dev/shm:rw,nosuid,nodev,noexec,relatime,size=${TMPFS_SIZE}
+    deploy:
+      resources:
+        reservations:
+          cpus: '${CPU_RESERVATION}'
+          memory: ${MEMORY_RESERVATION}
+        limits:
+          cpus: '${CPU_LIMIT}'
+          memory: ${MEMORY_LIMIT}
+    restart: unless-stopped
+    security_opt:
+      - seccomp:unconfined
+    cap_add:
+      - SYS_ADMIN
+      - SYS_RAWIO
+
+volumes:
+  webtop-config:

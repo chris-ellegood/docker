@@ -1,0 +1,19 @@
+services:
+  kavita:
+    image: jvmilazz0/kavita:latest
+    container_name: kavita
+    env_file:
+      - .env
+    restart: unless-stopped
+    ports:
+      - "${WEB_PORT}:5000"    # access at http://<NAS-IP>:${WEB_PORT}
+    environment:
+      - TZ=${TZ}
+    volumes:
+      - kavita-config:/kavita/config
+      - kavita-data:/kavita/data
+      - ${MEDIA_DIR}:/media
+
+volumes:
+  kavita-config:
+  kavita-data:

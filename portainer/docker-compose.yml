@@ -1,0 +1,20 @@
+services:
+  portainer:
+    image: portainer/portainer-ce:latest
+    container_name: portainer
+    restart: unless-stopped
+    env_file:
+      - .env
+    ports:
+      - "${WEB_PORT}:9000"
+      - "${AGENT_PORT}:8000"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+    command: -H unix:///var/run/docker.sock
+    environment:
+      - TZ=${TZ}
+      - PORTAINER_AGENT_SECRET=${SECRET}
+
+volumes:
+  portainer_data:

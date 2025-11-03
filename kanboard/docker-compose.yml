@@ -1,0 +1,16 @@
+services:
+  kanboard:
+    image: kanboard/kanboard:latest
+    container_name: kanboard
+    restart: unless-stopped
+    ports:
+      - "${WEB_PORT}:80"   # access at http://<NAS-IP>:${WEB_PORT}
+    volumes:
+      - kanboard-data:/var/www/app/data
+      - kanboard-plugins:/var/www/app/plugins
+    env_file:
+      - .env
+
+volumes:
+  kanboard-data:
+  kanboard-plugins:
